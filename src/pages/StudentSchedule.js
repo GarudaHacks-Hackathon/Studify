@@ -24,7 +24,9 @@ class StudentSchedule extends React.Component {
     this.closeDialog = this.closeDialog.bind(this);
     this.closeCreateClassDialog = this.closeCreateClassDialog(this);
     this.deleteClass = this.deleteClass.bind(this);
+    this.generateClass = this.generateClass.bind(this);
     this.state = {
+      studifyLink: "",
       createClassDialog: false,
       deletedClass: "",
       deleteClassDialog: false,
@@ -103,6 +105,12 @@ class StudentSchedule extends React.Component {
     console.log(className);
   }
 
+  generateClass() {
+    console.log(this.state.studifyLink);
+    this.setState({ loading: true, createClassDialog: false });
+    setTimeout(() => this.setState({ loading: false }), 1000);
+  }
+
   confirmDeleteClass() {
     console.log(`${this.state.deletedClass} deleted!`);
     this.setState({
@@ -132,7 +140,7 @@ class StudentSchedule extends React.Component {
             justify="center"
             style={{ minHeight: "50vh" }}
           >
-            <h1>👀 Getting your schedule, hang tight...</h1>
+            <h1>👀 Getting your schedule, hang on tight...</h1>
             <CircularProgress />
           </Grid>
         )}
@@ -230,12 +238,14 @@ class StudentSchedule extends React.Component {
               margin="dense"
               type="email"
               id="studify-link"
+              onChange={(e) => this.setState({ studifyLink: e.target.value })}
               label="Enter studify class link here"
             />
             <Button
               style={{ marginTop: 5 }}
               variant="contained"
               color="primary"
+              onClick={() => this.generateClass()}
             >
               Generate
             </Button>
