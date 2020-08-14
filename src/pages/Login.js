@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
 
     submit: {
         marginTop: theme.spacing(2),
+        width: "100%",
+        padding: 12,
+        marginTop: 20,
     },
 
     grid: {
@@ -80,16 +83,19 @@ function Login() {
                         </Grid>
                     </Grid>
 
-                    <Button 
-                        className={classes.submit}
-                        variant="contained" 
-                        color="primary"
-                        type="submit"
-                        fullWidth
-                        margin="normal"
-                    >
-                        Login
-                    </Button>
+                    
+                        <Link to="/student-schedule">
+                            <Button 
+                                className={classes.submit}
+                                variant="contained" 
+                                color="primary"
+                                type="submit"
+                                fullWidth
+                                margin="normal"
+                            >
+                                Login
+                            </Button>
+                        </Link>
 
                     <Grid
                         className={classes.grid}

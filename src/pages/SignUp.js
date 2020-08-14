@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
     div: {
@@ -26,13 +27,16 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2.5),
     },
 
-    formControl: {
+    textField: {
         marginTop: theme.spacing(1),
         minWidth: 200,
     },
 
     submit: {
         marginTop: theme.spacing(4),
+        width: "100%",
+        padding: 12,
+        marginTop: 20,
     },
 }));
 
@@ -127,19 +131,20 @@ function SignUp() {
                         Are you a student or a teacher/lecturer?
                     </Typography>
 
-                    <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel id="role">Role</InputLabel>
-                        <Select
-                            native
-                            id="role"
-                            label="Role"
-                            value={role}
-                            onChange={changeRole}
-                        >
-                            <option value={"Student"}>Student</option>
-                            <option value={"Teacher/Lecturer"}>Teacher/Lecturer</option>
-                        </Select>
-                    </FormControl>
+                    <TextField
+                        className={classes.textField}
+                        required
+                        select
+                        id="role"
+                        variant="outlined"
+                    >
+                        <MenuItem key={0} value={true}>
+                        Student
+                        </MenuItem>
+                        <MenuItem key={1} value={false}>
+                        Teacher/Lecturer
+                        </MenuItem>
+                    </TextField>
 
                     <Button 
                         className={classes.submit}
