@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
+import moment from "moment";
 
 const useStyles = makeStyles({
   root: {
@@ -59,7 +60,10 @@ function Class(props) {
           style={{ marginTop: 8 }}
           gutterBottom
         >
-          10 AM - 12 PM
+          {`${moment(props.c.from, "hh:mm:ss A").format("hh:mm A")} - ${moment(
+            props.c.to,
+            "hh:mm:ss A"
+          ).format("hh:mm A")}`}
         </Typography>
         {!props.offline && (
           <Typography
