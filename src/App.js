@@ -1,8 +1,9 @@
-<<<<<<< HEAD
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
+import Login from "./Pages/Login";
+import SignUp from "./pages/SignUp";
 import StudentSchedule from "./pages/StudentSchedule";
 import CreateClass from "./pages/CreateClass";
 import ClassGenerated from "./pages/ClassGenerated";
@@ -13,6 +14,12 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
+          <Login />
+        </Route>
+        <Route path="/signup">
+          <SignUp />
+        </Route>
+        <Route path="/student-schedule">
           <StudentSchedule />
         </Route>
         <Route path="/create-class">
@@ -23,27 +30,6 @@ function App() {
         </Route>
       </Switch>
     </Router>
-=======
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-
-function App() {
-  return (
-      <div>
-        <Router>
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route path="/signup" component={SignUp} />
-          </Switch>
-        </Router>
-      </div>
->>>>>>> bryan_branch
   );
 }
 
