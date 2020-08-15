@@ -33,25 +33,9 @@ if (!firebase.apps.length) {
 export const auth = firebase.auth();
 export const db = firebase.firestore();
 
-import firebase from "../firebase";
-
-const config = {
-  apiKey: "AIzaSyDuqngWgMDtzPJXkILsKm9ix7XQhE5uogU",
-  authDomain: "studify-32a2a.firebaseapp.com",
-  databaseURL: "https://studify-32a2a.firebaseio.com/",
-  projectId: "studify-32a2a",
-  storageBucket: "studify-32a2a.appspot.com",
-  messagingSenderId: "910542684017",
-  appId: "1:910542684017:web:ed4a30257b9f71c21c40d0",
-  measurementId: "G-BKWY6HZ23B",
-};
-
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
-
-export const auth = firebase.auth();
-export const db = firebase.firestore();
 
 class StudentSchedule extends React.Component {
   constructor(props) {
@@ -136,22 +120,30 @@ class StudentSchedule extends React.Component {
     this.setState({ createClassDialog: false });
   }
 
-  deleteClass(user_id,class_id) {
-    db.collection('users').doc(user_id)
-   .get().then(
-    doc => {
-       if (doc.exists) {
-         db.collection('users').doc(user_id).collection('classes').get().
-         then(classes => {
-            if (classes.docs.length > 0) {
-              db.collection('users').doc(user_id).collection('classes').doc(class_id).delete()
-           }
-         });
-    }
-  });
+  deleteClass(user_id, class_id) {
+    db.collection("users")
+      .doc(user_id)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          db.collection("users")
+            .doc(user_id)
+            .collection("classes")
+            .get()
+            .then((classes) => {
+              if (classes.docs.length > 0) {
+                db.collection("users")
+                  .doc(user_id)
+                  .collection("classes")
+                  .doc(class_id)
+                  .delete();
+              }
+            });
+        }
+      });
 
-    this.setState({ deletedClass: className, deleteClassDialog: true });
-    console.log(className);
+    // this.setState({ deletedClass: className, deleteClassDialog: true });
+    // console.log(className);
   }
 
   generateClass() {
