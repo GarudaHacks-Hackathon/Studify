@@ -1,4 +1,4 @@
-# Studify, a GarudaHacks hackathon tale
+# ✏️ Studify, a GarudaHacks hackathon tale
 
 ## Inspiration
 My team and I (the 3 of us) came up with this idea when we were struggling to organize our online classes links given by our lecturers at university, who constantly sends updates on new class links to our emails. Since it was a hassle to continuously search our emails and university forum pages for the class links, we came up with the idea to create a platform to organize and gather these online class links.
