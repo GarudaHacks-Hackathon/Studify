@@ -9,6 +9,9 @@ import TeacherSchedule from "./pages/TeacherSchedule";
 import CreateClass from "./pages/CreateClass";
 import ManageClass from "./pages/ManageClass";
 import ClassGenerated from "./pages/ClassGenerated";
+import CreateSponsor from "./pages/CreateSponsor";
+import SponsorList from "./pages/SponsorList";
+import SponsorDetails from "./pages/SponsorDetails";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function App() {
@@ -35,6 +38,15 @@ function App() {
         </Route>
         <Route path="/class-generated">
           <ClassGenerated />
+        </Route>
+        <Route path="/sponsor-list">
+          <SponsorList />
+        </Route>
+        <Route path="/create-sponsor">
+          <CreateSponsor />
+        </Route>
+        <Route path="/sponsor-details">
+          <SponsorDetails />
         </Route>
       </Switch>
     </Router>
