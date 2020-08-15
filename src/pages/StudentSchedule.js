@@ -12,7 +12,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import Class from "../components/Class";
 import Navbar from "../components/Navbar";
@@ -123,7 +125,7 @@ class StudentSchedule extends React.Component {
 
   async deleteClass(class_id) {
     this.setState({ loading: true });
-    const user_id = location.state.userID;
+    const user_id = this.props.userID;
     console.log(class_id);
     db.collection("users")
       .doc(user_id)
@@ -149,7 +151,6 @@ class StudentSchedule extends React.Component {
             });
         }
       });
-
     // this.setState({ deletedClass: className, deleteClassDialog: true });
     // console.log(className);
   }
@@ -162,10 +163,10 @@ class StudentSchedule extends React.Component {
 
   async fetchClass() {
     let schedule = [];
-    this.setState({ userID: location.state.userID });
+    this.setState({ userID: this.props.userID });
     const response = await db
       .collection("users")
-      .doc(location.state.userID)
+      .doc(this.props.userID)
       .collection("classes")
       .get();
 
@@ -190,10 +191,10 @@ class StudentSchedule extends React.Component {
 
   async componentDidMount() {
     let schedule = [];
-    this.setState({ userID: location.state.userID });
+    this.setState({ userID: this.props.userID });
     const response = await db
       .collection("users")
-      .doc(location.state.userID)
+      .doc(this.props.userID)
       .collection("classes")
       .get();
 
@@ -348,15 +349,22 @@ class StudentSchedule extends React.Component {
                 style={{ marginTop: 5 }}
                 variant="contained"
                 color="primary"
-                onClick={() => this.setState({ createClassDialog: false })}
+                onClick={() => {
+                  console.log(location);
+                  this.props.history.push({
+                    pathname: "/create-class",
+                    state: { userID: this.props.userID },
+                  });
+                  this.setState({ createClassDialog: false });
+                }}
               >
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
                   to={{
-                    pathname: '/create-class',
+                    pathname: "/create-class",
                     state: {
-                      userID : location.state.userID
-                    }
+                      userID: this.props.userID,
+                    },
                   }}
                 >
                   Create a new class
@@ -371,4 +379,18 @@ class StudentSchedule extends React.Component {
   }
 }
 
-export default StudentSchedule;
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setID: (newUserID) => dispatch({ type: "SET_USERID", payload: newUserID }),
+  };
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(StudentSchedule)
+);

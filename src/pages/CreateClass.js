@@ -15,11 +15,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { connect } from "react-redux";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ClassGenerated from "./ClassGenerated";
 import { withRouter } from "react-router-dom";
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 
 import firebase from "../firebase";
 
@@ -49,6 +50,7 @@ export const db = firebase.firestore();
 class CreateClass extends React.Component {
   constructor(props) {
     super(props);
+    this.userID = this.props.userID;
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.state = {
       className: "",
@@ -79,31 +81,31 @@ class CreateClass extends React.Component {
   createAClass(event) {
     event.preventDefault();
     this.state.loading = true;
-    
-    db.collection("users").doc(location.state.userID).add({
-      className: this.state.className,
-      zoomMeetingID: this.state.zoomMeetingID,
-      zoomMeetingPassword: this.state.zoomMeetingPassword,
-      zoomMeetingLink: this.state.zoomMeetingLink,
-      isTeacher: this.state.isTeacher,
-      teacherID: this.state.teacherID,
-      typeOfClass: this.state.typeOfClass,
-      day: this.state.day,
-      from: this.state.from,
-      to: this.state.to,
-      teacherEmail: this.state.teacherEmail,
-    })
-    .then(() => {
-      if (this.state.isTeacher)
-        this.props.history.push("/teacher-schedule");
-      else
+
+    db.collection("users")
+      .doc(this.props.userID)
+      .collection("classes")
+      .add({
+        className: this.state.className,
+        zoomMeetingID: this.state.zoomMeetingID,
+        zoomMeetingPassword: this.state.zoomMeetingPassword,
+        zoomMeetingLink: this.state.zoomMeetingLink,
+        isTeacher: this.state.isTeacher,
+        teacherID: this.state.teacherID,
+        meetingType: this.state.typeOfClass,
+        day: this.state.day,
+        from: this.state.from,
+        to: this.state.to,
+        teacherEmail: this.state.teacherEmail,
+      })
+      .then(() => {
         this.props.history.push("/student-schedule");
         this.state.loading = false;
-    })
-    .catch(function (error) {
-      this.state.loading = false;
-      throw new Error("Error creating class!");
-    });
+      })
+      .catch(function (error) {
+        this.state.loading = false;
+        throw new Error("Error creating class!");
+      });
   }
 
   handleTimeChange(time) {
@@ -112,6 +114,10 @@ class CreateClass extends React.Component {
 
   checkForm() {
     return this.state.className !== "";
+  }
+
+  componentDidMount() {
+    console.log(location);
   }
 
   render() {
@@ -153,7 +159,9 @@ class CreateClass extends React.Component {
             <TextField
               style={{ width: "100%", marginTop: 15 }}
               id="zoom-meeting-password"
-              onChange={(e) => this.setState({ zoomMeetingPassword: e.target.value })}
+              onChange={(e) =>
+                this.setState({ zoomMeetingPassword: e.target.value })
+              }
               label="Zoom meeting Password (Optional)"
               type="password"
               variant="outlined"
@@ -162,7 +170,9 @@ class CreateClass extends React.Component {
               required
               style={{ width: "100%", marginTop: 15 }}
               id="zoom-meeting-link"
-              onChange={(e) => this.setState({ zoomMeetingLink: e.target.value })}
+              onChange={(e) =>
+                this.setState({ zoomMeetingLink: e.target.value })
+              }
               label="Zoom meeting Link"
               variant="outlined"
             />
@@ -250,7 +260,10 @@ class CreateClass extends React.Component {
                   label="Alarm clock"
                   type="time"
                   defaultValue="07:30"
-                  onChange={(e) => this.setState({ from: e.target.value })}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    this.setState({ from: e.target.value });
+                  }}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -302,4 +315,18 @@ class CreateClass extends React.Component {
   }
 }
 
-export default withRouter(CreateClass);
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setID: (newUserID) => dispatch({ type: "SET_USERID", payload: newUserID }),
+  };
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(CreateClass)
+);

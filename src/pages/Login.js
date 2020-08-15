@@ -13,6 +13,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { connect } from "react-redux";
 
 import FormValidation from "../hooks/FormValidation";
 import ValidateLogin from "../hooks/ValidateLogin";
@@ -95,6 +96,7 @@ function Login(props) {
   } = FormValidation(initialState, ValidateLogin);
   const classes = useStyles();
 
+  const [userID, setUserID] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -114,11 +116,15 @@ function Login(props) {
             querySnapshot.forEach((doc) => {
               if (doc.data().email === email) {
                 if (doc.data().accountType === "Student") {
+                  localStorage.setItem("userID", doc.id);
+                  props.setID(doc.id);
                   props.history.push({
                     pathname: "/student-schedule",
                     state: { userID: doc.id },
                   });
                 } else {
+                  localStorage.setItem("userID", doc.id);
+                  props.setID(doc.id);
                   props.history.push({
                     pathname: "/teacher-schedule",
                     state: { userID: doc.id },
@@ -229,4 +235,16 @@ function Login(props) {
   );
 }
 
-export default withRouter(Login);
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setID: (newUserID) => dispatch({ type: "SET_USERID", payload: newUserID }),
+  };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
