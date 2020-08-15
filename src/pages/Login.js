@@ -10,10 +10,30 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-import FormValidation from '../hooks/FormValidation';
-import ValidateLogin from '../hooks/ValidateLogin';
+import FormValidation from "../hooks/FormValidation";
+import ValidateLogin from "../hooks/ValidateLogin";
 import zoom_logo from "../zoom-logo.svg";
 import "../css/Login.css";
+
+import firebase from "../firebase";
+
+const config = {
+  apiKey: "AIzaSyDuqngWgMDtzPJXkILsKm9ix7XQhE5uogU",
+  authDomain: "studify-32a2a.firebaseapp.com",
+  databaseURL: "https://studify-32a2a.firebaseio.com",
+  projectId: "studify-32a2a",
+  storageBucket: "studify-32a2a.appspot.com",
+  messagingSenderId: "910542684017",
+  appId: "1:910542684017:web:ed4a30257b9f71c21c40d0",
+  measurementId: "G-BKWY6HZ23B",
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
 
 const useStyles = makeStyles((theme) => ({
   div: {
@@ -49,11 +69,34 @@ const useStyles = makeStyles((theme) => ({
 const initialState = {
   email: "",
   password: "",
-}
+};
 
 function Login(props) {
-  const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateLogin);
+  const {
+    handleChange,
+    handleSubmit,
+    handleBlur,
+    values,
+    errors,
+    isSubmitting,
+    canEnter,
+  } = FormValidation(initialState, ValidateLogin);
   const classes = useStyles();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const signInWithEmailAndPasswordHandler = (event, email, password) => {
+    event.preventDefault();
+  };
+
+  const signInWithEmailAndPasswordHandler = (event, email, password) => {
+    event.preventDefault();
+    auth.signInWithEmailAndPassword(email, password).catch((error) => {
+      setError("Error signing in with password and email!");
+      console.error("Error signing in with password and email", error);
+    });
+  };
 
   return (
     <Container maxWidth="sm">
@@ -124,7 +167,7 @@ function Login(props) {
           >
             Login
           </Button>
-          
+
           <Grid
             className={classes.grid}
             container

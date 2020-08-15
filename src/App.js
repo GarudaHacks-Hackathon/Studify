@@ -14,6 +14,8 @@ import SponsorList from "./pages/SponsorList";
 import SponsorDetails from "./pages/SponsorDetails";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
+import firebase from "./firebase.js";
+
 function App() {
   return (
     <Router>
