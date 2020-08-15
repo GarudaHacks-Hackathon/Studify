@@ -1,14 +1,25 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
+
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import FormValidation from '../hooks/FormValidation';
+import ValidateAuth from '../hooks/ValidateAuth';
+
+const initialState = {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    reenterpassword: "",
+    role: "",
+}
 
 const useStyles = makeStyles(theme => ({
     div: {
@@ -40,13 +51,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function SignUp() {
+function SignUp(props) {
+    const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateAuth);
     const classes = useStyles();
-    const [role, setRole] = React.useState('');
-
-    const changeRole = (event) => {
-        setRole(event.target.value);
-    };
 
     return (
         <Container maxWidth="sm">
@@ -55,15 +62,20 @@ function SignUp() {
                     Create Account
                 </Typography>
 
-                <form className={classes.form}>
+                <form className={classes.form} onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <TextField
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 variant="outlined" 
                                 required
                                 fullWidth
                                 id="firstname"
                                 name="firstname"
+                                value={values.firstname}
+                                error={errors.firstname}
+                                helperText={errors.firstname}
                                 label="First Name" 
                                 autoComplete="firstname"
                                 margin="normal"
@@ -72,11 +84,16 @@ function SignUp() {
                     
                         <Grid item xs={6}>
                             <TextField
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 variant="outlined" 
                                 required
                                 fullWidth
                                 id="lastname"
                                 name="lastname"
+                                value={values.lastname}
+                                error={errors.lastname}
+                                helperText={errors.lastname}
                                 label="Last Name" 
                                 autoComplete="lastname"
                                 margin="normal"
@@ -87,11 +104,16 @@ function SignUp() {
                     <Grid container spacing={0}>
                         <Grid item xs={12}>
                             <TextField
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 variant="outlined" 
                                 required
                                 fullWidth
                                 id="email"
                                 name="email"
+                                value={values.email}
+                                error={errors.email}
+                                helperText={errors.email}
                                 label="Email Address" 
                                 autoComplete="email"
                                 margin="normal"
@@ -100,11 +122,16 @@ function SignUp() {
 
                         <Grid item xs={12}>
                             <TextField 
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 variant="outlined" 
                                 required
                                 fullWidth
                                 id="password"
                                 name="password"
+                                value={values.password}
+                                error={errors.password}
+                                helperText={errors.password}
                                 label="Password" 
                                 type="password"
                                 autoComplete="current-password"
@@ -114,11 +141,16 @@ function SignUp() {
 
                         <Grid item xs={12}>
                             <TextField 
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 variant="outlined" 
                                 required
                                 fullWidth
-                                id="re-enter-password"
-                                name="re-enter-password"
+                                id="reenterpassword"
+                                name="reenterpassword"
+                                value={values.reenterpassword}
+                                error={errors.reenterpassword}
+                                helperText={errors.reenterpassword}
                                 label="Re-enter Password" 
                                 type="password"
                                 autoComplete="current-password"
@@ -132,16 +164,22 @@ function SignUp() {
                     </Typography>
 
                     <TextField
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                         className={classes.textField}
                         required
                         select
                         id="role"
+                        name="role"
+                        value={values.role}
+                        error={errors.role}
+                        helperText={errors.role}
                         variant="outlined"
                     >
-                        <MenuItem key={0} value={true}>
+                        <MenuItem key={0} value="Student">
                         Student
                         </MenuItem>
-                        <MenuItem key={1} value={false}>
+                        <MenuItem key={1} value="Teacher/Lecturer">
                         Teacher/Lecturer
                         </MenuItem>
                     </TextField>
@@ -153,14 +191,19 @@ function SignUp() {
                         type="submit"
                         fullWidth
                         margin="normal"
+                        disabled={isSubmitting}
+                        onClick={() => {
+                            if (canEnter) {
+                                props.history.push("/");
+                            }
+                        }}
                     >
                         Sign Up
                     </Button>
-                    
                 </form>
             </div>
         </Container>
     )
 }
 
-export default SignUp
+export default withRouter(SignUp);

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Avatar from "@material-ui/core/Avatar";
@@ -7,6 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+
+import FormValidation from '../hooks/FormValidation';
+import ValidateAuth from '../hooks/ValidateAuth';
 import zoom_logo from "../zoom-logo.svg";
 import "../css/Login.css";
 
@@ -41,7 +46,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login() {
+const initialState = {
+  email: "",
+  password: "",
+}
+
+function Login(props) {
+  const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateAuth);
   const classes = useStyles();
 
   return (
@@ -57,15 +68,20 @@ function Login() {
           Studify
         </Typography>
 
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={0}>
             <Grid item xs={12}>
               <TextField
+                onChange={handleChange}
+                onBlur={handleBlur}
                 variant="outlined"
                 required
                 fullWidth
                 id="email"
                 name="email"
+                value={values.email}
+                error={errors.email}
+                helperText={errors.email}
                 label="Email Address"
                 autoComplete="email"
                 margin="normal"
@@ -74,11 +90,16 @@ function Login() {
 
             <Grid item xs={12}>
               <TextField
+                onChange={handleChange}
+                onBlur={handleBlur}
                 variant="outlined"
                 required
                 fullWidth
                 id="password"
                 name="password"
+                value={values.password}
+                error={errors.password}
+                helperText={errors.password}
                 label="Password"
                 type="password"
                 autoComplete="current-password"
@@ -87,19 +108,23 @@ function Login() {
             </Grid>
           </Grid>
 
-          <Link to="/student-schedule">
-            <Button
-              className={classes.submit}
-              variant="contained"
-              color="primary"
-              type="submit"
-              fullWidth
-              margin="normal"
-            >
-              Login
-            </Button>
-          </Link>
-
+          <Button
+            className={classes.submit}
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            margin="normal"
+            disabled={isSubmitting}
+            onClick={() => {
+              if (canEnter) {
+                props.history.push("/student-schedule");
+              }
+            }}
+          >
+            Login
+          </Button>
+          
           <Grid
             className={classes.grid}
             container
@@ -115,4 +140,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default withRouter(Login);
