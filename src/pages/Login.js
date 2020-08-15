@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
@@ -86,13 +86,12 @@ function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const signInWithEmailAndPasswordHandler = (event, email, password) => {
-    event.preventDefault();
-  };
 
   const signInWithEmailAndPasswordHandler = (event, email, password) => {
     event.preventDefault();
+
     auth.signInWithEmailAndPassword(email, password).catch((error) => {
+      throw new Error("Error signing in!");
       setError("Error signing in with password and email!");
       console.error("Error signing in with password and email", error);
     });
@@ -115,14 +114,13 @@ function Login(props) {
           <Grid container spacing={0}>
             <Grid item xs={12}>
               <TextField
-                onChange={handleChange}
+                onChange={(e) => setEmail(e.target.value)}
                 onBlur={handleBlur}
                 variant="outlined"
                 required
                 fullWidth
                 id="email"
                 name="email"
-                value={values.email}
                 error={errors.email}
                 helperText={errors.email}
                 label="Email Address"
@@ -133,14 +131,13 @@ function Login(props) {
 
             <Grid item xs={12}>
               <TextField
-                onChange={handleChange}
+                onChange={(e) => setPassword(e.target.value)}
                 onBlur={handleBlur}
                 variant="outlined"
                 required
                 fullWidth
                 id="password"
                 name="password"
-                value={values.password}
                 error={errors.password}
                 helperText={errors.password}
                 label="Password"
@@ -159,9 +156,12 @@ function Login(props) {
             fullWidth
             margin="normal"
             disabled={isSubmitting}
-            onClick={() => {
-              if (canEnter) {
+            onClick={(e) => {
+              try {
+                signInWithEmailAndPasswordHandler(e, email, password);
                 props.history.push("/student-schedule");
+              } catch (err) {
+                console.log(err);
               }
             }}
           >
