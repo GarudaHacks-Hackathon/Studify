@@ -9,6 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 import FormValidation from "../hooks/FormValidation";
 import ValidateLogin from "../hooks/ValidateLogin";
@@ -35,12 +39,20 @@ if (!firebase.apps.length) {
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const useStyles = makeStyles((theme) => ({
   div: {
     marginTop: theme.spacing(6),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
   },
 
   avatar: {
@@ -86,19 +98,40 @@ function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const signInWithEmailAndPasswordHandler = (event, email, password) => {
+  const signIn = async (event, email, password) => {
     event.preventDefault();
-
-    auth.signInWithEmailAndPassword(email, password).catch((error) => {
-      throw new Error("Error signing in!");
-      setError("Error signing in with password and email!");
-      console.error("Error signing in with password and email", error);
-    });
+    setLoading(true);
+    const response = await auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        setLoading(false);
+        props.history.push("/student-schedule");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setOpen(true);
+        setError("Error signing in with password and email!");
+        console.error("Error signing in with password and email", error);
+      });
   };
 
   return (
     <Container maxWidth="sm">
+      <Backdrop className={classes.backdrop} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert onClose={() => setOpen(false)} severity="error">
+          Invalid email address or password!
+        </Alert>
+      </Snackbar>
       <div className={classes.div}>
         <Avatar src={zoom_logo} className={classes.avatar} />
 
@@ -157,12 +190,7 @@ function Login(props) {
             margin="normal"
             disabled={isSubmitting}
             onClick={(e) => {
-              try {
-                signInWithEmailAndPasswordHandler(e, email, password);
-                props.history.push("/student-schedule");
-              } catch (err) {
-                console.log(err);
-              }
+              signIn(e, email, password);
             }}
           >
             Login
