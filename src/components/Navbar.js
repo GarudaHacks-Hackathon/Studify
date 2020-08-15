@@ -15,6 +15,7 @@ import Divider from "@material-ui/core/Divider";
 import PersonIcon from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,15 +77,24 @@ function Navbar() {
         </Grid>
         <Divider variant="middle" />
         <List style={{ width: 250 }} component="nav">
-          <ListItem></ListItem>
-          <ListItem button>
-            <ListItemIcon>🗓️</ListItemIcon>
-            <ListItemText primary="My classes" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>✉️</ListItemIcon>
-            <ListItemText primary="My sponsors" />
-          </ListItem>
+          <Link
+            style={{ textDecoration: "none", color: "black" }}
+            to="/student-schedule"
+          >
+            <ListItem button>
+              <ListItemIcon>🗓️</ListItemIcon>
+              <ListItemText primary="My classes" />
+            </ListItem>
+          </Link>
+          <Link
+            style={{ textDecoration: "none", color: "black" }}
+            to="/sponsor-list"
+          >
+            <ListItem button>
+              <ListItemIcon>✉️</ListItemIcon>
+              <ListItemText primary="My sponsors" />
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
     </div>
