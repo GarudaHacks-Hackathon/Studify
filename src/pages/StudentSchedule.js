@@ -41,6 +41,7 @@ class StudentSchedule extends React.Component {
   constructor(props) {
     super(props);
     this.closeDialog = this.closeDialog.bind(this);
+    this.fetchClass = this.fetchClass.bind(this);
     this.closeCreateClassDialog = this.closeCreateClassDialog(this);
     this.deleteClass = this.deleteClass.bind(this);
     this.generateClass = this.generateClass.bind(this);
@@ -120,7 +121,10 @@ class StudentSchedule extends React.Component {
     this.setState({ createClassDialog: false });
   }
 
-  deleteClass(user_id, class_id) {
+  async deleteClass(class_id) {
+    this.setState({ loading: true });
+    const user_id = location.state.userID;
+    console.log(class_id);
     db.collection("users")
       .doc(user_id)
       .get()
@@ -136,7 +140,11 @@ class StudentSchedule extends React.Component {
                   .doc(user_id)
                   .collection("classes")
                   .doc(class_id)
-                  .delete();
+                  .delete()
+                  .then(() => {
+                    this.fetchClass();
+                    this.setState({ loading: false });
+                  });
               }
             });
         }
@@ -152,6 +160,22 @@ class StudentSchedule extends React.Component {
     setTimeout(() => this.setState({ loading: false }), 1000);
   }
 
+  async fetchClass() {
+    let schedule = [];
+    this.setState({ userID: location.state.userID });
+    const response = await db
+      .collection("users")
+      .doc(location.state.userID)
+      .collection("classes")
+      .get();
+
+    response.docs.map((doc) =>
+      schedule.push({ classID: doc.id, data: doc.data() })
+    );
+    console.log(schedule);
+    this.setState({ classes: schedule });
+  }
+
   confirmDeleteClass() {
     console.log(`${this.state.deletedClass} deleted!`);
     this.setState({
@@ -165,8 +189,19 @@ class StudentSchedule extends React.Component {
   }
 
   async componentDidMount() {
-    console.log(location.state.userID);
+    let schedule = [];
     this.setState({ userID: location.state.userID });
+    const response = await db
+      .collection("users")
+      .doc(location.state.userID)
+      .collection("classes")
+      .get();
+
+    response.docs.map((doc) =>
+      schedule.push({ classID: doc.id, data: doc.data() })
+    );
+    console.log(schedule);
+    this.setState({ classes: schedule });
     setTimeout(() => this.setState({ loading: false }), 1000);
   }
 

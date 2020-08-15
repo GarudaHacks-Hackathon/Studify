@@ -23,13 +23,15 @@ const useStyles = makeStyles({
 function Class(props) {
   const state = {};
 
+  const c = props.c.data;
+
   const classes = useStyles();
 
   return (
     <Card elevation={2} className={classes.root}>
       <CardContent style={{ flex: 1 }}>
         <Typography variant="h5" component="h5" gutterBottom>
-          {props.c.className}
+          {c.className}
         </Typography>
       </CardContent>
 
@@ -45,13 +47,13 @@ function Class(props) {
             variant="outlined"
             style={{ marginRight: 10 }}
             color="primary"
-            label={props.c.meetingType}
+            label={c.meetingType}
           />
           <Chip
             variant="outlined"
             style={{ marginRight: 10 }}
             color="primary"
-            label={props.c.day}
+            label={c.day}
           />
         </div>
         <Typography
@@ -60,47 +62,18 @@ function Class(props) {
           style={{ marginTop: 8 }}
           gutterBottom
         >
-          {`${moment(props.c.from, "hh:mm:ss A").format("hh:mm A")} - ${moment(
-            props.c.to,
-            "hh:mm:ss A"
-          ).format("hh:mm A")}`}
+          {`${c.from} - ${c.to}`}
         </Typography>
-        {!props.offline && (
-          <Typography
-            variant="h7"
-            component="h7"
-            style={{ color: "#34FFD8" }}
-            gutterBottom
-          >
-            Currently online
-          </Typography>
-        )}
-        {props.offline && (
-          <Typography
-            variant="h7"
-            component="h7"
-            style={{ color: "#FF3472" }}
-            gutterBottom
-          >
-            Currently offline
-          </Typography>
-        )}
       </div>
       <CardActions>
-        {!props.offline && (
-          <Button size="medium" style={{ color: "#34FFD8" }}>
-            Join Now
-          </Button>
-        )}
-        {props.offline && (
-          <Button size="medium" style={{ color: "#9900FF" }}>
-            Notify Me
-          </Button>
-        )}
+        <Button size="medium" style={{ color: "#34FFD8" }}>
+          Join Now
+        </Button>
+
         {props.deleteMode && (
           <Button
             size="medium"
-            onClick={() => props.deleteClass(props.className)}
+            onClick={() => props.deleteClass(props.c.classID)}
             style={{ color: "#FF3472" }}
           >
             Delete
