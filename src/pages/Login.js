@@ -37,7 +37,7 @@ if (!firebase.apps.length) {
 }
 
 export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const db = firebase.firestore();
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -108,7 +108,19 @@ function Login(props) {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         setLoading(false);
-        props.history.push("/student-schedule");
+        db.collection("users")
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              if (doc.data().email === email) {
+                if (doc.data().accountType === "Student") {
+                  props.history.push("/student-schedule");
+                } else {
+                  props.history.push("/teacher-schedule");
+                }
+              }
+            });
+          });
       })
       .catch((error) => {
         setLoading(false);
