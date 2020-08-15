@@ -131,141 +131,158 @@ class StudentSchedule extends React.Component {
     return (
       <div>
         <Navbar />
-        {this.state.loading && (
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "50vh" }}
+
+        <div>
+          {this.state.loading && (
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justify="center"
+              style={{ minHeight: "50vh" }}
+            >
+              <h1>👀 Getting your schedule, hang on tight...</h1>
+              <CircularProgress />
+            </Grid>
+          )}
+          {!this.state.loading && (
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <h1 style={{ marginLeft: 50, padding: 10 }}>🗓️ Your classes</h1>
+                <Fab
+                  style={{ alignSelf: "center", marginLeft: 10 }}
+                  color="primary"
+                  aria-label="add"
+                  onClick={() => this.setState({ createClassDialog: true })}
+                >
+                  <AddIcon />
+                </Fab>
+                <Fab
+                  style={{ alignSelf: "center", marginLeft: 12 }}
+                  color="secondary"
+                  aria-label="edit"
+                  onClick={() =>
+                    this.setState({ deleteMode: !this.state.deleteMode })
+                  }
+                >
+                  <EditIcon />
+                </Fab>
+              </div>
+
+              {this.state.classes.length == 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    textAlign: "center",
+                  }}
+                >
+                  <h1>
+                    Your schedule is empty! Start by creating some classes.
+                  </h1>
+                </div>
+              )}
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  marginLeft: 50,
+                  paddingLeft: 10,
+                }}
+              >
+                {this.state.classes.map((c) => (
+                  <Class
+                    c={c}
+                    offline={true}
+                    deleteMode={this.state.deleteMode}
+                    deleteClass={this.deleteClass}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+          <Dialog
+            open={this.state.deleteClassDialog}
+            onClose={this.closeDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
           >
-            <h1>👀 Getting your schedule, hang on tight...</h1>
-            <CircularProgress />
-          </Grid>
-        )}
-        {!this.state.loading && (
-          <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-              }}
-            >
-              <h1 style={{ marginLeft: 50, padding: 10 }}>🗓️ Your classes</h1>
-              <Fab
-                style={{ alignSelf: "center", marginLeft: 10 }}
-                color="primary"
-                aria-label="add"
-                onClick={() => this.setState({ createClassDialog: true })}
-              >
-                <AddIcon />
-              </Fab>
-              <Fab
-                style={{ alignSelf: "center", marginLeft: 12 }}
+            <DialogTitle id="alert-dialog-title">{`Delete ${this.state.deletedClass}?`}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                This process cannot be reversed!
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => this.closeDialog()}>Cancel</Button>
+              <Button
+                variant="outlined"
                 color="secondary"
-                aria-label="edit"
-                onClick={() =>
-                  this.setState({ deleteMode: !this.state.deleteMode })
-                }
+                onClick={() => this.confirmDeleteClass()}
               >
-                <EditIcon />
-              </Fab>
-            </div>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                marginLeft: 50,
-                paddingLeft: 10,
-              }}
-            >
-              {this.state.classes.map((c) => (
-                <Class
-                  c={c}
-                  offline={true}
-                  deleteMode={this.state.deleteMode}
-                  deleteClass={this.deleteClass}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        <Dialog
-          open={this.state.deleteClassDialog}
-          onClose={this.closeDialog}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{`Delete ${this.state.deletedClass}?`}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              This process cannot be reversed!
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.closeDialog()}>Cancel</Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => this.confirmDeleteClass()}
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog
-          open={this.state.createClassDialog}
-          onClose={this.closeCreateClassDialog}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle id="alert-dialog-title">Add a class</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
+          <Dialog
+            open={this.state.createClassDialog}
+            onClose={this.closeCreateClassDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            maxWidth="sm"
+            fullWidth
+          >
+            <DialogTitle id="alert-dialog-title">Add a class</DialogTitle>
+            <DialogContent>
+              {/* <DialogContentText>
               To subscribe to this website, please enter your email address
               here. We will send updates occasionally.
             </DialogContentText> */}
-            <TextField
-              autoFocus
-              fullWidth
-              margin="dense"
-              type="email"
-              id="studify-link"
-              onChange={(e) => this.setState({ studifyLink: e.target.value })}
-              label="Enter studify class link here"
-            />
-            <Button
-              style={{ marginTop: 5 }}
-              variant="contained"
-              color="primary"
-              onClick={() => this.generateClass()}
-            >
-              Generate
-            </Button>
-            <h3>OR</h3>
-            <Button
-              style={{ marginTop: 5 }}
-              variant="contained"
-              color="primary"
-              onClick={() => this.setState({ createClassDialog: false })}
-            >
-              <Link
-                style={{ color: "white", textDecoration: "none" }}
-                to="/create-class"
+              <TextField
+                autoFocus
+                fullWidth
+                margin="dense"
+                type="email"
+                id="studify-link"
+                onChange={(e) => this.setState({ studifyLink: e.target.value })}
+                label="Enter studify class link here"
+              />
+              <Button
+                style={{ marginTop: 5 }}
+                variant="contained"
+                color="primary"
+                onClick={() => this.generateClass()}
               >
-                Create a new class
-              </Link>
-            </Button>
-          </DialogContent>
-          <DialogActions></DialogActions>
-        </Dialog>
+                Generate
+              </Button>
+              <h3>OR</h3>
+              <Button
+                style={{ marginTop: 5 }}
+                variant="contained"
+                color="primary"
+                onClick={() => this.setState({ createClassDialog: false })}
+              >
+                <Link
+                  style={{ color: "white", textDecoration: "none" }}
+                  to="/create-class"
+                >
+                  Create a new class
+                </Link>
+              </Button>
+            </DialogContent>
+            <DialogActions></DialogActions>
+          </Dialog>
+        </div>
       </div>
     );
   }
