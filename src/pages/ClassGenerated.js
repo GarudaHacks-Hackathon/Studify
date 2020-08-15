@@ -46,7 +46,10 @@ class ClassGenerated extends React.Component {
             variant="outlined"
             defaultValue="www.studify.com/?data1=value1&data2=value2"
             variant="outlined"
-            disabled
+            label="Generated studify link"
+            InputProps={{
+              readOnly: true,
+            }}
           />
           <div style={{ display: "flex", flexDirection: "row" }}>
             <Button
@@ -65,7 +68,10 @@ class ClassGenerated extends React.Component {
               color="primary"
               style={{ marginTop: 10, marginLeft: 10 }}
             >
-              <Link style={{ color: "white", textDecoration: "none" }} to="/">
+              <Link
+                style={{ color: "white", textDecoration: "none" }}
+                to="/student-schedule"
+              >
                 Back to classes
               </Link>
             </Button>
