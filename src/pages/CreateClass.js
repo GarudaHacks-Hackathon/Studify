@@ -13,9 +13,38 @@ import Navbar from "../components/Navbar";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ClassGenerated from "./ClassGenerated";
 import { withRouter } from "react-router-dom";
+import { createBrowserHistory } from 'history';
+
+import firebase from "../firebase";
+
+const config = {
+  apiKey: "AIzaSyDuqngWgMDtzPJXkILsKm9ix7XQhE5uogU",
+  authDomain: "studify-32a2a.firebaseapp.com",
+  databaseURL: "https://studify-32a2a.firebaseio.com",
+  projectId: "studify-32a2a",
+  storageBucket: "studify-32a2a.appspot.com",
+  messagingSenderId: "910542684017",
+  appId: "1:910542684017:web:ed4a30257b9f71c21c40d0",
+  measurementId: "G-BKWY6HZ23B",
+};
+
+const history = createBrowserHistory();
+
+// Get the current location.
+const location = history.location;
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
+export const auth = firebase.auth();
+export const db = firebase.firestore();
 
 class CreateClass extends React.Component {
   constructor(props) {
@@ -23,26 +52,62 @@ class CreateClass extends React.Component {
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.state = {
       className: "",
-      selectedTime: new Date("2014-08-18T21:11:54"),
-      meetingType: ["Lecture", "Tutorial", "Meeting"],
-      days: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
+      zoomMeetingID: 0,
+      zoomMeetingPassword: "",
+      zoomMeetingLink: "",
+      isTeacher: false,
+      teacherID: "",
+      typeOfClass: "",
+      day: "",
+      from: "",
+      to: "",
+      teacherEmail: "",
+      loading: false,
     };
+    this.meetingType = ["Lecture", "Tutorial", "Meeting"];
+    this.days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+  }
+
+  createAClass(event) {
+    event.preventDefault();
+    this.state.loading = true;
+    
+    db.collection("users").doc(location.state.userID).add({
+      className: this.state.className,
+      zoomMeetingID: this.state.zoomMeetingID,
+      zoomMeetingPassword: this.state.zoomMeetingPassword,
+      zoomMeetingLink: this.state.zoomMeetingLink,
+      isTeacher: this.state.isTeacher,
+      teacherID: this.state.teacherID,
+      typeOfClass: this.state.typeOfClass,
+      day: this.state.day,
+      from: this.state.from,
+      to: this.state.to,
+      teacherEmail: this.state.teacherEmail,
+    })
+    .then(() => {
+      if (this.state.isTeacher)
+        this.props.history.push("/teacher-schedule");
+      else
+        this.props.history.push("/student-schedule");
+        this.state.loading = false;
+    })
+    .catch(function (error) {
+      this.state.loading = false;
+      throw new Error("Error creating class!");
+    });
   }
 
   handleTimeChange(time) {
     this.setState({ selectedTime: time });
-  }
-
-  createAClass() {
-    return;
   }
 
   checkForm() {
@@ -53,6 +118,9 @@ class CreateClass extends React.Component {
     return (
       <div>
         <Navbar />
+        <Backdrop open={this.state.loading}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <form onSubmit={this.createAClass}>
           <Container
             component="main"
@@ -78,12 +146,14 @@ class CreateClass extends React.Component {
               style={{ width: "100%", marginTop: 15 }}
               required
               id="zoom-meeting-id"
+              onChange={(e) => this.setState({ zoomMeetingID: e.target.value })}
               label="Zoom meeting ID"
               variant="outlined"
             />
             <TextField
               style={{ width: "100%", marginTop: 15 }}
               id="zoom-meeting-password"
+              onChange={(e) => this.setState({ zoomMeetingPassword: e.target.value })}
               label="Zoom meeting Password (Optional)"
               type="password"
               variant="outlined"
@@ -92,6 +162,7 @@ class CreateClass extends React.Component {
               required
               style={{ width: "100%", marginTop: 15 }}
               id="zoom-meeting-link"
+              onChange={(e) => this.setState({ zoomMeetingLink: e.target.value })}
               label="Zoom meeting Link"
               variant="outlined"
             />
@@ -100,6 +171,7 @@ class CreateClass extends React.Component {
               required
               select
               style={{ width: "100%" }}
+              onChange={(e) => this.setState({ isTeacher: e.target.value })}
               id="is-teacher"
               variant="outlined"
             >
@@ -115,10 +187,11 @@ class CreateClass extends React.Component {
               required
               select
               style={{ width: "100%" }}
+              onChange={(e) => this.setState({ typeOfClass: e.target.value })}
               id="is-teacher"
               variant="outlined"
             >
-              {this.state.meetingType.map((meeting, i) => (
+              {this.meetingType.map((meeting, i) => (
                 <MenuItem key={i} value={meeting}>
                   {meeting}
                 </MenuItem>
@@ -144,10 +217,11 @@ class CreateClass extends React.Component {
                   required
                   select
                   style={{}}
+                  onChange={(e) => this.setState({ day: e.target.value })}
                   id="day"
                   variant="outlined"
                 >
-                  {this.state.days.map((day, i) => (
+                  {this.days.map((day, i) => (
                     <MenuItem key={i} value={day}>
                       {day}
                     </MenuItem>
@@ -176,6 +250,7 @@ class CreateClass extends React.Component {
                   label="Alarm clock"
                   type="time"
                   defaultValue="07:30"
+                  onChange={(e) => this.setState({ from: e.target.value })}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -197,6 +272,7 @@ class CreateClass extends React.Component {
                   label="Alarm clock"
                   type="time"
                   defaultValue="07:30"
+                  onChange={(e) => this.setState({ to: e.target.value })}
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -213,10 +289,8 @@ class CreateClass extends React.Component {
               variant="contained"
               type="submit"
               color="primary"
-              onClick={() => {
-                if (this.checkForm()) {
-                  this.props.history.push("/class-generated");
-                }
+              onClick={(e) => {
+                this.createAClass(e);
               }}
             >
               Create class
