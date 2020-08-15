@@ -352,7 +352,12 @@ class StudentSchedule extends React.Component {
               >
                 <Link
                   style={{ color: "white", textDecoration: "none" }}
-                  to="/create-class"
+                  to={{
+                    pathname: '/create-class',
+                    state: {
+                      userID : location.state.userID
+                    }
+                  }}
                 >
                   Create a new class
                 </Link>
