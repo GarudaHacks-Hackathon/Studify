@@ -1,4 +1,4 @@
-function ValidateAuth(values) {
+function ValidateSignUp(values) {
     let errors = {};
 
     // Email errors
@@ -41,4 +41,4 @@ function ValidateAuth(values) {
 }
 
 
-export default ValidateAuth
+export default ValidateSignUp

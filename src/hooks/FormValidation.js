@@ -11,7 +11,7 @@ function FormValidation(initialState, validate) {
             const noErrors = Object.keys(errors).length === 0;
 
             if (noErrors) {
-                console.log(values.firstname, values.lastname, values.email, values.password, values.reenterpassword, values.role);
+                console.log(values.email, values.password);
                 setSubmitting(false);
                 setEnter(true);
             }

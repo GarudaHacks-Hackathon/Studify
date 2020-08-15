@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import FormValidation from '../hooks/FormValidation';
-import ValidateAuth from '../hooks/ValidateAuth';
+import ValidateSignUp from '../hooks/ValidateSignUp';
 
 const initialState = {
     firstname: "",
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SignUp(props) {
-    const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateAuth);
+    const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateSignUp);
     const classes = useStyles();
 
     return (

@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import FormValidation from '../hooks/FormValidation';
-import ValidateAuth from '../hooks/ValidateAuth';
+import ValidateLogin from '../hooks/ValidateLogin';
 import zoom_logo from "../zoom-logo.svg";
 import "../css/Login.css";
 
@@ -52,7 +52,7 @@ const initialState = {
 }
 
 function Login(props) {
-  const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateAuth);
+  const { handleChange, handleSubmit, handleBlur, values, errors, isSubmitting, canEnter } = FormValidation(initialState, ValidateLogin);
   const classes = useStyles();
 
   return (
