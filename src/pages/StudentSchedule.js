@@ -120,7 +120,20 @@ class StudentSchedule extends React.Component {
     this.setState({ createClassDialog: false });
   }
 
-  deleteClass(className) {
+  deleteClass(user_id,class_id) {
+    db.collection('users').doc(user_id)
+   .get().then(
+    doc => {
+       if (doc.exists) {
+         db.collection('users').doc(user_id).collection('classes').get().
+         then(classes => {
+            if (classes.docs.length > 0) {
+              db.collection('users').doc(user_id).collection('classes').doc(class_id).delete()
+           }
+         });
+    }
+  });
+
     this.setState({ deletedClass: className, deleteClassDialog: true });
     console.log(className);
   }
