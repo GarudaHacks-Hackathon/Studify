@@ -114,7 +114,13 @@ class CreateClass extends React.Component {
   }
 
   checkForm() {
-    return this.state.className !== "";
+    return (
+      this.state.className !== "" &&
+      this.state.zoomMeetingID !== "" &&
+      this.state.zoomMeetingLink !== "" &&
+      this.state.meetingType !== "" &&
+      this.state.day !== ""
+    );
   }
 
   componentDidMount() {
@@ -181,6 +187,7 @@ class CreateClass extends React.Component {
             <TextField
               required
               select
+              defaultValue=""
               style={{ width: "100%" }}
               onChange={(e) => this.setState({ isTeacher: e.target.value })}
               id="is-teacher"
@@ -197,6 +204,7 @@ class CreateClass extends React.Component {
             <TextField
               required
               select
+              defaultValue=""
               style={{ width: "100%" }}
               onChange={(e) => this.setState({ typeOfClass: e.target.value })}
               id="is-teacher"
@@ -249,10 +257,10 @@ class CreateClass extends React.Component {
                 <h4>From</h4>
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                   <KeyboardTimePicker
+                    required
                     margin="normal"
                     id="from"
                     label="From"
-                    value={this.state.selectedTime}
                     onChange={(e) =>
                       this.setState({ from: moment(e).format("hh:mm a") })
                     }
@@ -300,6 +308,7 @@ class CreateClass extends React.Component {
                 /> */}
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                   <KeyboardTimePicker
+                    required
                     margin="normal"
                     id="from"
                     label="To"
@@ -318,7 +327,9 @@ class CreateClass extends React.Component {
               type="submit"
               color="primary"
               onClick={(e) => {
-                this.createAClass(e);
+                if (this.checkForm()) {
+                  this.createAClass(e);
+                }
               }}
             >
               Create class
