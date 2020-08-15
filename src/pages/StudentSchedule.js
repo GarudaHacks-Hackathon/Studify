@@ -239,7 +239,14 @@ class StudentSchedule extends React.Component {
                   style={{ alignSelf: "center", marginLeft: 10 }}
                   color="primary"
                   aria-label="add"
-                  onClick={() => this.setState({ createClassDialog: true })}
+                  onClick={() => {
+                    console.log(location);
+                    this.props.history.push({
+                      pathname: "/create-class",
+                      state: { userID: this.props.userID },
+                    });
+                    this.setState({ createClassDialog: false });
+                  }}
                 >
                   <AddIcon />
                 </Fab>
@@ -327,7 +334,7 @@ class StudentSchedule extends React.Component {
               To subscribe to this website, please enter your email address
               here. We will send updates occasionally.
             </DialogContentText> */}
-              <TextField
+              {/* <TextField
                 autoFocus
                 fullWidth
                 margin="dense"
@@ -343,8 +350,8 @@ class StudentSchedule extends React.Component {
                 onClick={() => this.generateClass()}
               >
                 Generate
-              </Button>
-              <h3>OR</h3>
+              </Button> */}
+              {/* <h3>OR</h3> */}
               <Button
                 style={{ marginTop: 5 }}
                 variant="contained"

@@ -73,7 +73,7 @@ function Navbar() {
           <Avatar className={classes.large}>
             <PersonIcon fontSize="large" />
           </Avatar>
-          <h2>Jack Jackson</h2>
+          <h2>Student</h2>
         </Grid>
         <Divider variant="middle" />
         <List style={{ width: 250 }} component="nav">
@@ -86,7 +86,7 @@ function Navbar() {
               <ListItemText primary="My classes" />
             </ListItem>
           </Link>
-          <Link
+          {/* <Link
             style={{ textDecoration: "none", color: "black" }}
             to="/sponsor-list"
           >
@@ -94,7 +94,7 @@ function Navbar() {
               <ListItemIcon>✉️</ListItemIcon>
               <ListItemText primary="My sponsors" />
             </ListItem>
-          </Link>
+          </Link> */}
         </List>
       </Drawer>
     </div>

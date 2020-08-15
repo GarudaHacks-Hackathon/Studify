@@ -23,6 +23,7 @@ import { withRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import firebase from "../firebase";
+import { timePickerDefaultProps } from "@material-ui/pickers/constants/prop-types";
 
 const config = {
   apiKey: "AIzaSyDuqngWgMDtzPJXkILsKm9ix7XQhE5uogU",
@@ -246,16 +247,18 @@ class CreateClass extends React.Component {
                 }}
               >
                 <h4>From</h4>
-                {/* <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardTimePicker
-                  margin="normal"
-                  id="from"
-                  label="From"
-                  value={this.state.selectedTime}
-                  onChange={this.handleTimeChange}
-                />
-              </MuiPickersUtilsProvider> */}
-                <TextField
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <KeyboardTimePicker
+                    margin="normal"
+                    id="from"
+                    label="From"
+                    value={this.state.selectedTime}
+                    onChange={(e) =>
+                      this.setState({ from: moment(e).format("hh:mm a") })
+                    }
+                  />
+                </MuiPickersUtilsProvider>
+                {/* <TextField
                   id="time"
                   label="Alarm clock"
                   type="time"
@@ -270,7 +273,7 @@ class CreateClass extends React.Component {
                   inputProps={{
                     step: 300, // 5 min
                   }}
-                />
+                /> */}
               </div>
               <div
                 style={{
@@ -280,19 +283,31 @@ class CreateClass extends React.Component {
                 }}
               >
                 <h4>To</h4>
-                <TextField
+                {/* <TextField
                   id="time"
                   label="Alarm clock"
                   type="time"
-                  defaultValue="07:30"
-                  onChange={(e) => this.setState({ to: e.target.value })}
+                  onChange={(e) => {
+                    console.log(e);
+                    this.setState({ to: e });
+                  }}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   inputProps={{
                     step: 300, // 5 min
                   }}
-                />
+                /> */}
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <KeyboardTimePicker
+                    margin="normal"
+                    id="from"
+                    label="To"
+                    onChange={(e) =>
+                      this.setState({ to: moment(e).format("hh:mm a") })
+                    }
+                  />
+                </MuiPickersUtilsProvider>
               </div>
             </div>
 
