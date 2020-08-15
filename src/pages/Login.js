@@ -114,9 +114,15 @@ function Login(props) {
             querySnapshot.forEach((doc) => {
               if (doc.data().email === email) {
                 if (doc.data().accountType === "Student") {
-                  props.history.push("/student-schedule");
+                  props.history.push({
+                    pathname: "/student-schedule",
+                    state: { userID: doc.id },
+                  });
                 } else {
-                  props.history.push("/teacher-schedule");
+                  props.history.push({
+                    pathname: "/teacher-schedule",
+                    state: { userID: doc.id },
+                  });
                 }
               }
             });

@@ -73,7 +73,11 @@ function Class(props) {
         </Typography>
       </div>
       <CardActions>
-        <Button size="medium" style={{ color: "#34FFD8" }}>
+        <Button
+          onClick={() => window.open(props.c.zoomMeetingLink, "_blank")}
+          size="medium"
+          style={{ color: "#34FFD8" }}
+        >
           Start
         </Button>
         <Link

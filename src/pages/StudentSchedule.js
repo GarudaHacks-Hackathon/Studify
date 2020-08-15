@@ -17,6 +17,21 @@ import { Link } from "react-router-dom";
 import Class from "../components/Class";
 import Navbar from "../components/Navbar";
 import "../css/StudentSchedule.css";
+import { createBrowserHistory } from "history";
+import { config } from "../config";
+import firebase from "../firebase";
+
+const history = createBrowserHistory();
+
+// Get the current location.
+const location = history.location;
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
+export const auth = firebase.auth();
+export const db = firebase.firestore();
 
 class StudentSchedule extends React.Component {
   constructor(props) {
@@ -26,6 +41,7 @@ class StudentSchedule extends React.Component {
     this.deleteClass = this.deleteClass.bind(this);
     this.generateClass = this.generateClass.bind(this);
     this.state = {
+      userID: "",
       studifyLink: "",
       createClassDialog: false,
       deletedClass: "",
@@ -34,7 +50,7 @@ class StudentSchedule extends React.Component {
       deleteMode: false,
       classes: [
         {
-          className: "Algorithms and Data Structures",
+          className: "Algorithms",
           zoomMeetingID: 123456789,
           zoomMeetingPassword: 123456789,
           zoomMeetingLink: "https://monash.zoom.us/j/9112685720",
@@ -123,7 +139,9 @@ class StudentSchedule extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log(location.state.userID);
+    this.setState({ userID: location.state.userID });
     setTimeout(() => this.setState({ loading: false }), 1000);
   }
 

@@ -119,15 +119,6 @@ function ManageClass(props) {
             }}
           >
             <h4>From</h4>
-            {/* <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardTimePicker
-                  margin="normal"
-                  id="from"
-                  label="From"
-                  value={this.state.selectedTime}
-                  onChange={this.handleTimeChange}
-                />
-              </MuiPickersUtilsProvider> */}
             <TextField
               id="time"
               label="From"
