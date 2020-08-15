@@ -16,7 +16,7 @@ This was our first hackathon we attended and we had zero experience in attending
 Our team managed to implement some functionality of the project and also on time before the hackathon ends despite the sudden drastic change in skill level, a missing team member and amount of workload. We also had lots of fun building this application and worked tirelessly to deliver this project.
 
 ## What we learned
-Our team learned lots of new skills along the way. While I have some experience in React, the other team members had to learn React and Firebase along the way. We have also developed teamwork, planning and communication skills while coding together as a team.
+Our team learned lots of new skills along the way. Most of our team had to learn React and Firebase along the way. We have also developed teamwork, planning and communication skills while coding together as a team.
 
 ## What's next for Studify
 If opportunity arises, our team would be delighted to continue development on this project to implement more exciting features. We believe that this application would help students and teachers to organize and manage their schedule during these struggling times where education has transitioned into online learning.
