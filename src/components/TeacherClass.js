@@ -7,12 +7,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
     display: "flex",
     flexDirection: "column",
-    width: 260,
     padding: 5,
     marginRight: 40,
     marginTop: 20,
@@ -45,6 +45,12 @@ function Class(props) {
             variant="outlined"
             style={{ marginRight: 10 }}
             color="primary"
+            label={`${props.c.studentCount} students`}
+          />
+          <Chip
+            variant="outlined"
+            style={{ marginRight: 10 }}
+            color="primary"
             label={props.c.meetingType}
           />
           <Chip
@@ -65,38 +71,30 @@ function Class(props) {
             "hh:mm:ss A"
           ).format("hh:mm A")}`}
         </Typography>
-        {!props.offline && (
-          <Typography
-            variant="h7"
-            component="h7"
-            style={{ color: "#34FFD8" }}
-            gutterBottom
-          >
-            Currently online
-          </Typography>
-        )}
-        {props.offline && (
-          <Typography
-            variant="h7"
-            component="h7"
-            style={{ color: "#FF3472" }}
-            gutterBottom
-          >
-            Currently offline
-          </Typography>
-        )}
       </div>
       <CardActions>
-        {!props.offline && (
-          <Button size="medium" style={{ color: "#34FFD8" }}>
-            Join Now
-          </Button>
-        )}
-        {props.offline && (
+        <Button size="medium" style={{ color: "#34FFD8" }}>
+          Start
+        </Button>
+        <Link
+          style={{ textDecoration: "none" }}
+          to={{
+            pathname: "/manage-class",
+            state: {
+              className: props.c.className,
+              zoomMeetingID: props.c.zoomMeetingID,
+              zoomMeetingPassword: props.c.zoomMeetingPassword,
+              zoomMeetingLink: props.c.zoomMeetingLink,
+              day: props.c.day,
+              from: props.c.from,
+              to: props.c.to,
+            },
+          }}
+        >
           <Button size="medium" style={{ color: "#9900FF" }}>
-            Notify Me
+            Manage
           </Button>
-        )}
+        </Link>
         {props.deleteMode && (
           <Button
             size="medium"
