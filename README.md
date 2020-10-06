@@ -20,3 +20,5 @@ Our team learned lots of new skills along the way. Most of our team had to learn
 
 ## What's next for Studify
 If opportunity arises, our team would be delighted to continue development on this project to implement more exciting features. We believe that this application would help students and teachers to organize and manage their schedule during these struggling times where education has transitioned into online learning.
+
+Here's the project in full view : https://devpost.com/software/studify-ctzvb7
