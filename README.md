@@ -22,3 +22,17 @@ Our team learned lots of new skills along the way. Most of our team had to learn
 If opportunity arises, our team would be delighted to continue development on this project to implement more exciting features. We believe that this application would help students and teachers to organize and manage their schedule during these struggling times where education has transitioned into online learning.
 
 Here's the project in full view : https://devpost.com/software/studify-ctzvb7
+
+## Wireframe designs
+![New Wireframe 6](https://user-images.githubusercontent.com/25546711/95852190-ef356f00-0d85-11eb-8013-17d32b42ca5e.png)
+![Login Loading Page](https://user-images.githubusercontent.com/25546711/95852194-f2305f80-0d85-11eb-8c0d-0bdd899ee184.png)
+![New Wireframe 7](https://user-images.githubusercontent.com/25546711/95852196-f2305f80-0d85-11eb-9e2b-f5024af91e9b.png)
+![New Wireframe 8](https://user-images.githubusercontent.com/25546711/95852199-f3fa2300-0d85-11eb-8994-830cd1063e3c.png)
+![New Wireframe 3](https://user-images.githubusercontent.com/25546711/95852207-f65c7d00-0d85-11eb-8d00-70aec6c0d37f.png)
+![New Wireframe 2](https://user-images.githubusercontent.com/25546711/95852213-f78daa00-0d85-11eb-9ad5-98caf6ce46d1.png)
+![New Wireframe 9](https://user-images.githubusercontent.com/25546711/95852215-f8bed700-0d85-11eb-8c66-a197eebcdf3d.png)
+![New Wireframe 11](https://user-images.githubusercontent.com/25546711/95852220-fa889a80-0d85-11eb-8927-11f4da8a5bbb.png)
+![New Wireframe 1](https://user-images.githubusercontent.com/25546711/95852225-fbb9c780-0d85-11eb-900d-348a0ec2589d.png)
+![New Wireframe 4](https://user-images.githubusercontent.com/25546711/95852229-fceaf480-0d85-11eb-87eb-fc42e4e7f3a0.png)
+
+
